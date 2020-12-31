@@ -6,13 +6,13 @@ html
   padding: 0;}
 
 body
-{ font: normal .80em 'trebuchet ms', arial, sans-serif;
+{ font: normal .80rem 'trebuchet ms', arial, sans-serif;
   background: #F7F7F7 url(pattern.png) fixed;
   color: #555;}
 
 p
 { padding: 0 0 20px 0;
-  line-height: 1.5em;
+  line-height: 1.5rem;
   font-size: 107%;}
 
 img
@@ -40,7 +40,7 @@ h4, h5, h6
   padding: 0 0 5px 0;
   font: normal 100% arial, sans-serif;
   color: #F14E23;
-  line-height: 1em;}
+  line-height: 1rem;}
 
 h5, h6
 { font: italic 95% arial, sans-serif;
