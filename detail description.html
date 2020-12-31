@@ -1,0 +1,161 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>Automated brain tractography segmentation using curvature points</title>
+  <meta name="description" content="website description" />
+  <meta name="keywords" content="website keywords, website keywords" />
+  <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine&amp;v1" />
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz" />
+  <link rel="stylesheet" type="text/css" href="style/style.css" />
+  
+  <style>
+a:link    {color:grey; background-color:transparent; text-decoration:none}
+a:visited {color:grey; background-color:transparent; text-decoration:none}
+a:hover   {color:grey; background-color:transparent; text-decoration:underline}
+a:active  {color:grey; background-color:transparent; text-decoration:underline}
+</style>
+</head>
+
+
+<body>
+  <div id="main">
+    <div id="header">
+      <div id="logo">
+        <h1>Automated brain tractography segmentation using curvature points</h1>
+      </div>
+      <div id="menubar">
+        <ul id="menu">
+          <!-- put class="current" in the li tag for the selected page - to highlight which page you're on -->
+          <li><a href="index.html">About Project</a></li>
+          <li class="current"><a href="detail description.html">Detail Description</a></li>
+          <li><a href="links.html">Links</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="site_content">
+      <div id="sidebar_container">
+        <img class="paperclip" src="style/paperclip.png" alt="paperclip" />
+        <div class="sidebar">
+     <!--    insert your sidebar items here -->
+        <h3><a href="#Basic">Basic Preliminaries</a></h3>
+        </div>
+        <img class="paperclip" src="style/paperclip.png" alt="paperclip" />
+        <div class="sidebar">
+          <h3><a href="#curvature">Curvature Points</a></h3>
+        </div>
+        <img class="paperclip" src="style/paperclip.png" alt="paperclip" />
+        <div class="sidebar">
+          <h3><a href="#ball">Space Discritization</a></h3>
+        </div>
+        <img class="paperclip" src="style/paperclip.png" alt="paperclip" />
+        <div class="sidebar">
+          <h3><a href="#Clustering">Clustering</a></h3>
+        </div>
+        <img class="paperclip" src="style/paperclip.png" alt="paperclip" />
+        <div class="sidebar">
+          <h3><a href="#Feature">Feature Extraction</a></h3>
+        </div>
+      </div>
+ <div id="content">
+       <!--  <insert the page content here -->
+       <h2><a name="Basic">Basic Preliminaries</a></h2>
+        <h3>Brain</h3>
+            <p>Human brain has sub-division that serves different functionality. Communication between them
+              is done via series of neuron connections known as fibers. Each neuron has dendrites that receives
+              signal from other neurons and after processing in cell body transmits the signal to other neuron
+              from axons. Brain has 100 billion neurons, communicating
+              with each other via axons, forming a complex neural network. Brain has two tissues- white
+              matter and grey matter.</p>
+              <p>
+              In white matter space some fibers that follow the same path form a bundle or cluster called
+              Neural tract. Neural tracts are the pathways that connect different parts of the brain. We focus on
+              8 tracts-Arcute, Cingulum, Corticospinal, Forceps Major, Fornix, Inferior Occipitofrontal Fasciculus, Superior Longitudinal Fasciculus and Uncinate.</p>
+      <h3>Proposed Solution</h3>
+            <p>In this paper we propose an approach that uses labeled
+              white matter DTI data to automatically learn fea-
+              tures for different anatomically meaningful fiber clus-
+              ters of brain's white matter. The features involve max-
+              imum curvature points on the trajectory of each fiber,
+              to learn the individual model for each class of the 8
+              primary classes. These curvature points embody the
+              characteristics of the respective classes. Furthermore,
+              at a macro level, a model is trained to classify the data
+              into 2 groups: one containing a group of 8 white mat-
+              ter tracts and one containing fibers not belonging to
+              any of them. Any test fiber is classified into one of the
+              classes by comparing a proximity based on the learned
+              high-curvature-point based model. </p>
+
+
+<hr align="centre" width="100%">
+<p></p>
+
+            <h2><a name="curvature">Curvature Points</a></h2>
+            <p>To get the point having high curvature with good approximation, circum-radius is used. For
+            every triplet of consecutive points in fiber, one can fit a unique circle. We use this fact to compute
+            circum-radius of every 3 consecutive points(boundary points are excluded).</p>
+           <img src="Curvature.jpg" alt=" Circumradius" style="width:304px;height:304px;">
+            <p>
+             Above Figure shows the visualization. The points which would have high
+              circum-radius would have less curvature and hence are less interesting. On the other hand, the
+              points that have small radius would amount to change in path of the curve.
+            </p>
+
+<hr align="centre" width="100%">
+<p></p>
+
+<h2><a name="ball">Space Discretization</a></h2>
+
+              
+            <p>We want to compare fibers using the points that have high curvature. But as more fibers are
+              considered, it introduces noise and is difficult to approximate regions that best characterizes
+              the curve. So to overcome this problem we use following approach. </p>
+              <ol>
+              <li>For each class a grid is constructed.</li>
+              <li>Each point of fiber is approximated to the nearest grid point.</li>
+              <li>The average curvature value for all the points approximated at grid points is also stored. </li>
+              <li>Only those grid points that have high frequency count than the a predifined threshold are used from here on.</li>
+              </ol>
+<img src="grid.png" alt=" Grid" style="width:374px;height:304px;">
+            
+            <p>
+            This step reduces the data points significantly. It is very likely that points will have tendency to lie on same grid points. All of points lying on same grid points are now considered as single point. 
+            </p>
+
+            
+
+<hr align="centre" width="100%">
+<p></p>
+
+<h2><a name="Clustering">Clustering </a></h2>
+<p> Now points are chosen that have least curvature value. These points chosen would represent the
+points having highest curvature value of the accumulated fibers. The points would be distributed
+in different regions. We cluster these to get a single mean for each region. Each class will have
+different number of regions and hence different number of clusters. The number of clusters for
+each class are empirically determined. In the Figure below the yellow points are the points with
+good curvature value. Red points are the cluster means that have been obtained after clustering.
+Ideally we would have one red point for each concentrated yellow points.</p>
+
+<img src="Class5_center.jpg" alt="center" style="width:304px;height:304px;">
+
+
+
+<h2><a name="Feature">Feature Extraction </a></h2>
+<p>
+Eight Features are computed that corresponds to proximity to each class. After previous step we have mean points of clusters for each class. For classification of new fiber
+we would calculate the circum-radius value and choose top points that
+have high curvature. Let that set be S. This points should be closer to the centers of the correct
+class than other classes. So 8 values are calcuted using metric.  </p>
+<p>
+  Two level classification is used macro level and micro level. In macro level fiber is classified into either white matter or grey matter using forementioned eight values by neural network. If fiber is predicted to white matter then one of the 8 white matter class with minimum distance to fiber is announced as predicted class. 
+  </p>
+      </div>
+    </div>
+    <div id="footer">
+      <p>Copyright &copy; Indian Institute of Technology, Mandi</p>
+    </div>
+  </div>
+</body>
+</html>
